@@ -1,5 +1,7 @@
-import React, {useContext} from 'react';
-import {Link} from 'react-router-dom';
+import React, { useContext, Fragment, useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Link, Navigate } from 'react-router-dom';
+import { logout, load_user } from '../../redux/actions/auth';
 import { DarkModeContext } from '../../context/darkModeContext';
 import './sidebar.scss';
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -13,75 +15,114 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 
-const Sidebar = () => {
+function Sidebar({ 
+    isAuthenticated,
+    user,
+    load_user,
+    logout, 
+  }) {
+  useEffect (() => {
+    load_user()
+  }, [])
   const { dispatch } = useContext(DarkModeContext);
+
+  const [redirect, setRedirect] = useState(false);
+  const logoutHandler = () => {
+    logout();
+    setRedirect(true);
+  }
+  if (redirect) {
+    return <Navigate to="/signin" />
+  }
+
+  const guestLinks = (
+    <Fragment>
+      <Link to="/signin">
+        Sign In
+      </Link>
+      <Link to="/signup">
+        Register
+      </Link>
+    </Fragment>
+  )
+
   return (
     <div className='sidebar'>
-        <div className="top">
-          <Link to="/" style={{textDecoration:'none'}}>
-            <span className="logo">logo</span>
+      <div className="top">
+        <Link to="/" style={{ textDecoration: 'none' }}>
+          <span className="logo">{user?.first_name}</span>
+        </Link>
+      </div>
+      <div className="center">
+        <ul>
+          <p className="title"> MAIN </p>
+          <Link to="/" style={{ textDecoration: 'none' }}>
+            <li>
+              <DashboardIcon className='icon' />
+              <button>Dashboard</button>
+            </li>
           </Link>
-        </div>
-        <div className="center">
-          <ul>
-            <p className="title"> MAIN </p>
-            <Link to="/" style={{textDecoration:'none'}}>
-              <li>
-                <DashboardIcon className='icon'/>
-                <span>Dashboard</span>
-              </li>
-            </Link>
-            <p className="title"> LISTS </p>
-            <Link to="/users" style={{textDecoration:'none'}}>
-              <li>
-                <PersonOutlineIcon className='icon'/>
-                <span>Users</span>
-              </li>
-            </Link>
-            <Link to="/products" style={{textDecoration: 'none'}}>
-              <li>
-                <StoreIcon className="icon" />
-                <span>Products</span>
-              </li>
-            </Link>
+          <p className="title"> LISTS </p>
+          <Link to="/users" style={{ textDecoration: 'none' }}>
             <li>
-              <LocalShippingIcon className="icon" />
-              <span>Delivery</span>
+              <PersonOutlineIcon className='icon' />
+              <button>Users</button>
             </li>
-            <p className="title"> USEFUL LINKS </p>
+          </Link>
+          <Link to="/products" style={{ textDecoration: 'none' }}>
             <li>
-              <InsertChartIcon className="icon" />
-              <span>Stats</span>
+              <StoreIcon className="icon" />
+              <button>Products</button>
             </li>
-            <li>
-              <NotificationsNoneIcon className="icon" />
-              <span>Notification</span>
-            </li>
-            <li>
-              <SettingsApplicationsIcon className="icon" />
-              <span>Settings</span>
-            </li>
-            <li>
-              <PsychologyOutlinedIcon className="icon" />
-              <span>Logs</span>
-            </li>
-            <p className="title"> USER </p>
-            <li>
-              <AccountCircleOutlinedIcon className="icon" />
-              <span>Profile</span>
-            </li>
+          </Link>
+          <li>
+            <LocalShippingIcon className="icon" />
+            <button>Delivery</button>
+          </li>
+          <p className="title"> USEFUL LINKS </p>
+          <li>
+            <InsertChartIcon className="icon" />
+            <button>Stats</button>
+          </li>
+          <li>
+            <NotificationsNoneIcon className="icon" />
+            <button>Notification</button>
+          </li>
+          <li>
+            <SettingsApplicationsIcon className="icon" />
+            <button>Settings</button>
+          </li>
+          <li>
+            <PsychologyOutlinedIcon className="icon" />
+            <button>Logs</button>
+          </li>
+          <p className="title"> USER </p>
+          <li>
+            <AccountCircleOutlinedIcon className="icon" />
+            <button>Profile</button>
+          </li>
+          <form method="POST" action="#">
             <li>
               <ExitToAppIcon className="icon" />
-              <span>Logout</span>
+              <button onClick={ logoutHandler }>Logout</button>
             </li>
-          </ul>
-        </div>
-        <div className="bottom">
-          <div className="colorOptions" onClick={() => dispatch({type: "LIGHT"})}></div>
-          <div className="colorOptions" onClick={() => dispatch({type: "DARK"})}></div>
-        </div>
+          </form>
+        </ul>
+      </div>
+      <div className="bottom">
+        <div className="colorOptions" onClick={() => dispatch({ type: "LIGHT" })}></div>
+        <div className="colorOptions" onClick={() => dispatch({ type: "DARK" })}></div>
+      </div>
     </div>
   )
 }
 
-export default Sidebar
+const mapStateToProps = state => ({
+  isAuthenticated: state.Auth.isAuthenticated,
+  user: state.Auth.user,
+})
+
+export default connect (mapStateToProps, {
+  logout,  
+  load_user
+}) (Sidebar)
