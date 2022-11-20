@@ -43,7 +43,7 @@ const Signin = ({ login, loading }) => {
     if (loggedInUser) {
       setauthenticated(true);
       navigate("/");      
-    }
+    } 
   }, []);
 
   const [formData, setFormData] = useState ({
@@ -64,12 +64,11 @@ const Signin = ({ login, loading }) => {
     if (loggedInUser) {
       setauthenticated(true);      
     }    
-    if(authenticated){
-      navigate("/")
-    }
   }
-  
-  
+
+  if(authenticated){
+    navigate("/")
+  }
 
   return (
     <ThemeProvider theme={theme}>
