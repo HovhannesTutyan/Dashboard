@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user',
     'test_suite',
+    'test_case',
     'corsheaders',
     'rest_framework',
     'djoser',

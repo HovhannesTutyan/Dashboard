@@ -3,7 +3,7 @@ from .models import TestSuit
 
 class TestSuitAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
-        return False
+        return True
     list_display=('id', 'name', 'parent')
     list_display_link = ('id')
     list_filter = ('name', 'parent')
