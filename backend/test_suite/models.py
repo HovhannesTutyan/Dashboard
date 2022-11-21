@@ -13,7 +13,7 @@ class TestSuit(models.Model):
     parent = models.ForeignKey('self', related_name="children", on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=255, unique=True)
     photo = models.ImageField(upload_to='photos/%Y/%m/')
-    count = models.IntegerField(default=0);
+    count = models.IntegerField(default=0)
     date_issued = models.DateTimeField(default=datetime.now)
 
     def get_thumbnail(self):
@@ -22,4 +22,4 @@ class TestSuit(models.Model):
         return ''
 
     def __str__(self):
-        return f"{self.name} issued on date {self.date_issued}"
+        return self.name

@@ -3,8 +3,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
+from django.db.models import Prefetch
 
 from .models import TestSuit
+from test_case.models import TestCase
+from test_case.serializers import TestCaseSerializer
 
 class ListTestSuitsView(APIView):
     def get(self, request, format=None):
@@ -57,9 +60,27 @@ class ListTestSuitDetailView(APIView):
                 result['photo'] = test_suit.photo.url
                 result['count'] = test_suit.count
                 result['date_issued'] = test_suit.date_issued
+
+                qs = TestCase.objects.filter(test_suit=test_suit)
+
+                test_case = []
+                
+                for q in qs:
+                    t_case = {}
+                    t_case['title'] = q.title
+                    t_case['photo'] = q.photo.url
+                    t_case['description'] = q.description
+                    t_case['reproduction_steps'] = q.reproduction_steps
+                    t_case['expected_results'] = q.expected_results
+                    t_case['actual_results'] = q.actual_results
+                    t_case['comments'] = q.comments
+                    t_case['environment'] = q.environment
+                    t_case['status'] = q.status
+
+                    test_case.append(t_case)
                 
                 return Response(
-                    {'test_suit':result},
+                    {'test_suit':result, 'test_suit_cases': test_case},
                     status=status.HTTP_200_OK
                 )
             else:
