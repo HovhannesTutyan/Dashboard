@@ -48,11 +48,14 @@
                     color: #7451f8;
                 }
 
-                span {
+                button {
                     font-size: 13px;
                     font-weight: 600;
                     color: #888;
                     margin-left: 10px;
+                    background: transparent;
+                    border: none;
+                    cursor: pointer;
                 }
             }
         }
