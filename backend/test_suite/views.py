@@ -20,11 +20,13 @@ class ListTestSuitsView(APIView):
             for suit in test_suit:
                 if not suit.parent:
                     item = {}
+                    item["id"] = suit.suit_id
                     item["parent"] = suit.parent
                     item['name'] = suit.name
                     item['photo'] = suit.photo.url
                     item['count'] = suit.count
                     item['date_issued'] = suit.date_issued
+                    item['thumbnail'] = suit.get_thumbnail()
                     
                     item["sub_suit"] = []
                     
@@ -38,7 +40,7 @@ class ListTestSuitsView(APIView):
                     result.append(item)
 
             return Response(
-                {'test_suits':result},
+                {'TestSuits':result},
                 status=status.HTTP_200_OK
             )
         except:

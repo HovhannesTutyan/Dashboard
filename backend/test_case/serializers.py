@@ -16,5 +16,5 @@ class TestCaseSerializer(serializers.ModelSerializer):
             'environment',
             'test_suit',
             'status',
-            'date_created'
+            'date_created',
         ]

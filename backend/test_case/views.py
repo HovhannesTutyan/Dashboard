@@ -94,7 +94,7 @@ class ListSearchView(APIView):
         if testsuit_id == 0:
             search_results = TestCaseSerializer(search_results, many=True)
             return Response (
-                {'search_products':search_results.data},
+                {'search_cases':search_results.data},
                 status=status.HTTP_200_OK
             )
         

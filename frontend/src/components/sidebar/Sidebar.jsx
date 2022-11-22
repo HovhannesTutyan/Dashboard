@@ -63,13 +63,13 @@ function Sidebar({
             </li>
           </Link>
           <p className="title"> LISTS </p>
-          <Link to="/users" style={{ textDecoration: 'none' }}>
+          <Link to="/cases" style={{ textDecoration: 'none' }}>
             <li>
               <PersonOutlineIcon className='icon' />
               <button>Users</button>
             </li>
           </Link>
-          <Link to="/products" style={{ textDecoration: 'none' }}>
+          <Link to="/suits" style={{ textDecoration: 'none' }}>
             <li>
               <StoreIcon className="icon" />
               <button>Products</button>
